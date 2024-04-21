@@ -1,4 +1,4 @@
-# Portfolio style-guide
+# Amy's Portfolio style-guide
 
 This portfolio site was built to be responsive across three devices: 
 
