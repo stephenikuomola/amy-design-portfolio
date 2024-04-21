@@ -4,7 +4,6 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { FlatCompat } from '@eslint/eslintrc';
 import pluginJs from '@eslint/js';
-import js from '@eslint/js';
 
 // mimic CommonJS variables -- not needed if using CommonJS
 const __filename = fileURLToPath(import.meta.url);
@@ -15,17 +14,19 @@ const compat = new FlatCompat({
 });
 
 export default [
-  { languageOptions: { globals: globals.browser } },
+  { languageOptions: { globals: globals.browser, ecmaVersion: 'latest' } },
   ...compat.extends('airbnb-base', 'prettier'),
 
-  js.configs.recommended,
   {
-    files: ['**/*.js'],
+    files: ['src/**/*.js'],
     ignores: [
       '**/*.config.js',
+      '!**/eslint.config.js',
+      '**/*.json',
+
+      // Non-global ignores pattern can ONLY MATCH FILE NAMES. Global pattern are pattern that tend not to have the rule key word coming after or before. 
       'build/**',
       'node_modules/**',
-      '**/*.json',
       '.parcel-cache/**'
     ],
     rules: {
