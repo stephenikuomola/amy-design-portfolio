@@ -1,13 +1,23 @@
 {
-  "name": "designers-portfolio",
+  "name": "amy-design-portfolio",
   "version": "1.0.0",
   "description": "![Design preview for the Single-page design portfolio coding challenge](./preview.jpg)",
   "source": "index.html",
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "parcel index.html"
   },
-  "keywords": ["HTML","CSS","JavaScript","Parcel","ESLint","JSDoc "],
+  "keywords": [
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "Parcel",
+    "ESLint",
+    "JSDoc "
+  ],
   "author": "Stephen Ikuomola",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.12.0"
+  }
 }
