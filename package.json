@@ -5,7 +5,9 @@
   "source": "index.html",
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
-    "start": "parcel index.html"
+    "start": "parcel index.html", 
+    "lint": "npx eslint ./src --ext .js",
+    "lint:eslint": " npx eslint --fix ."
   },
   "keywords": [
     "HTML",
@@ -15,9 +17,11 @@
     "ESLint",
     "JSDoc "
   ],
+  "type": "module",
   "author": "Stephen Ikuomola",
   "license": "ISC",
   "devDependencies": {
-    "parcel": "^2.12.0"
+    "parcel": "^2.12.0",
+    "prettier": "3.2.5"
   }
 }
