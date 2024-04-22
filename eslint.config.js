@@ -14,7 +14,7 @@ const compat = new FlatCompat({
 });
 
 export default [
-  { languageOptions: { globals: globals.browser, ecmaVersion: 'latest' } },
+  { languageOptions: { globals: globals.browser } },
   ...compat.extends('airbnb-base', 'prettier'),
 
   {
@@ -38,7 +38,12 @@ export default [
       'no-dupe-args': 'error',
       'no-dupe-class-members': 'error',
       'no-dupe-keys': 'error',
-      'no-unreachable': 'error'
+      'no-unreachable': 'error', 
+      'default-case': 'error', 
+      'default-case-last': 'error', 
+      'no-ex-assign': 'error', 
+      'no-sparse-arrays': "error", 
+      'no-useless-assignment': "error"
     }
   }
 ];
