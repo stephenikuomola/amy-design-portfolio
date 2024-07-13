@@ -9,7 +9,7 @@ This portfolio site was built to be responsive across three devices:
 ## Colors
 
 ```css
---galactic-blue: hsl(225, 66%, 62%);
+--galactic-blue: hsl(252, 66%, 62%);
 --light-red: hsl(7, 77%, 66%);
 --black: hsl(0, 0%, 1%);
 --summer-yellow: hsl(28, 89%, 67%);
@@ -19,6 +19,7 @@ This portfolio site was built to be responsive across three devices:
 --dark-purple: hsl(314, 45%, 23%);
 --light-cream: hsl(28, 100%, 97%);
 --white: hsl(0, 0%, 100%);
+--cyan: hsl(172, 46%, 67%)
 ```
 
 ## Gap

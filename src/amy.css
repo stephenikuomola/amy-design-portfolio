@@ -1,0 +1,367 @@
+:root {
+  /* Color */
+  --galactic-blue: hsl(252, 66%, 62%);
+  --light-red: hsl(7, 77%, 66%);
+  --black: hsl(0, 0%, 1%);
+  --summer-yellow: hsl(28, 89%, 67%);
+  --cyan: hsl(172, 46%m 57%);
+  --medium-brown: hsl(30, 5%, 45%);
+  --pink: hsl(0, 78%, 79%);
+  --dark-purple: hsl(314, 45%, 23%);
+  --light-cream: hsl(28, 100%, 97%);
+  --white: hsl(0, 0%, 100%);
+  --cyan: hsl(172, 46%, 67%); 
+
+  /* Gap */
+  --gap-0: 0px;
+  --gap-1: 1px;
+  --gap-1_25: 0.125rem;
+  --gap-2_5: 0.25rem;
+  --gap-3_75: 0.375rem;
+  --gap-5: 0.5rem;
+  --gap-6_25: 0.625rem;
+  --gap-7_5: 0.75rem;
+  --gap-8_75: 0.875rem;
+  --gap-10: 1rem;
+  --gap-12_5: 1.25rem;
+  --gap-15: 1.5rem;
+  --gap-17_5: 1.75rem;
+  --gap-20: 2rem;
+  --gap-22_5: 2.25rem;
+  --gap-27_5: 2.75rem;
+  --gap-30: 3rem;
+  --gap-35: 3.5rem;
+  --gap-40: 4rem;
+  --gap-50: 5rem;
+  --gap-60: 6rem;
+  --gap-70: 7rem;
+  --gap-80: 8rem;
+  --gap-90: 9rem;
+  --gap-100: 10rem;
+  --gap-110: 11rem;
+  --gap-120: 12rem;
+  --gap-130: 13rem;
+  --gap-140: 14rem;
+  --gap-150: 15rem;
+  --gap-160: 16rem;
+  --gap-180: 18rem;
+  --gap-200: 20rem;
+  --gap-240: 24rem;
+
+  /* Display */
+  --hidden: none;
+  --block: block;
+  --inline: inline;
+  --inline-block: inline-block;
+  --flex: flex;
+  --inline-flex: inline-flex;
+  --grid: grid;
+  --inline-grid: inline-grid;
+
+  /* Radius */
+  --radius-1: 2px;
+  --radius-2: 4px;
+  --radius-3: 6px;
+  --radius-4: 8px;
+  --radius-5: 10px;
+  --radius-6: 12px;
+  --radius-7: 16px;
+  --radius-8: 20px;
+  --radius-9: 24px;
+  --radius-10: 26px;
+  --radius-11: 28px;
+  --radius-12: 30px;
+  --radius-13: 32px;
+  --radius-14: 34px;
+  --radius-15: 36px;
+  --radius-16: 38px;
+  --radius-17: 40px;
+
+  /* Typography */
+  --ff-plus-jakarta-sans-sans-serif: var(--ff-plus-jakarta-sans), sans-serif;
+  --ff-plus-jakarta-sans: 'Plus Jakarta Sans';
+  --fw-100: 100;
+  --fw-200: 200;
+  --fw-300: 300;
+  --fw-400: 400;
+  --fw-500: 500;
+  --fw-600: 600;
+  --fw-700: 700;
+  --fw-800: 800;
+  --font-style: normal;
+  --line-height-none: 1;
+  --line-height-tight: 1.25;
+  --line-height-snug: 1.375;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+  --line-height-loose: 2;
+  --letter-spacing-tighter: -0.05em;
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0em;
+  --letter-spacing-wide: 0.025em;
+  --letter-spacing-wider: 0.05em;
+  --letter-spacing-widest: 0.1em;
+  
+  /* Font Sizes */
+  --font-size-0: clamp(0.625rem, 0.53rem + 0.6612vi, 1.125rem);
+  --font-size-1: clamp(0.8331rem, 0.6707rem + 1.1298vi, 1.6875rem);
+  --font-size-2: clamp(1.1106rem, 0.8405rem + 1.8786vi, 2.5313rem);
+  --font-size-3: clamp(1.4804rem, 1.04rem + 3.0631vi, 3.7969rem);
+
+  /* Spacing */
+  --space-1: clamp(0.1875rem, 0.1637rem + 0.1653vi, 0.3125rem);
+  --space-2: clamp(0.3125rem, 0.265rem + 0.3306vi, 0.5625rem);
+  --space-3: clamp(0.5rem, 0.4287rem + 0.4959vi, 0.875rem);
+  --space-4: clamp(0.625rem, 0.53rem + 0.6612vi, 1.125rem);
+  --space-5: clamp(0.9375rem, 0.7949rem + 0.9917vi, 1.6875rem);
+  --space-6: clamp(1.25rem, 1.0599rem + 1.3223vi, 2.25rem);
+  --space-7: clamp(1.875rem, 1.5899rem + 1.9835vi, 3.375rem);
+  --space-8: clamp(2.5rem, 2.1198rem + 2.6446vi, 4.5rem);
+  --space-9: clamp(3.75rem, 3.1798rem + 3.9669vi, 6.75rem);
+  --space-1-2: clamp(0.1875rem, 0.1162rem + 0.4959vi, 0.5625rem);
+  --space-2-3: clamp(0.3125rem, 0.2056rem + 0.7438vi, 0.875rem);
+  --space-3-4: clamp(0.5rem, 0.3812rem + 0.8264vi, 1.125rem);
+  --space-4-5: clamp(0.625rem, 0.423rem + 1.405vi, 1.6875rem);
+  --space-5-6: clamp(0.9375rem, 0.688rem + 1.7355vi, 2.25rem);
+  --space-6-7: clamp(1.25rem, 0.8461rem + 2.8099vi, 3.375rem);
+  --space-7-8: clamp(1.875rem, 1.376rem + 3.4711vi, 4.5rem);
+  --space-8-9: clamp(2.5rem, 1.6921rem + 5.6198vi, 6.75rem);
+  --space-4-6: clamp(0.625rem, 0.3161rem + 2.1488vi, 2.25rem);
+}
+
+
+/* CSS RESETS */
+* {
+  margin: 0; 
+  padding: 0; 
+}
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--ff-plus-jakarta-sans-sans-serif); 
+  overflow-x: hidden; 
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  overflow: break-word; 
+}
+
+img {
+  max-width: 100%; 
+  height: auto; 
+  display: var(--block); 
+}
+
+button {
+  appearance: none; 
+  background: none; 
+  border: none; 
+}
+
+a {
+  text-decoration: none;
+  width: var(--space-7); 
+  height: var(--space-7); 
+  cursor: pointer; 
+  display: var(--block); 
+}
+
+body {
+  width: 100%; 
+  min-height: 100vh; 
+  background-color: var(--light-cream); 
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.heading-large {
+  font-size: var(--font-size-3); 
+  font-style: normal; 
+  font-weight: var(--fw-700); 
+  line-height: var(--line-height-tight); 
+}
+
+.heading-medium {
+  font-size: var(--font-size-2); 
+  font-style: normal; 
+  font-weight: var(--fw-700); 
+  line-height: var(--line-height-tight); 
+}
+
+.heading-small {
+  font-size: var(--font-size-1); 
+  font-style: normal; 
+  font-weight: var(--fw-500); 
+  line-height: var(--line-height-tight); 
+}
+
+/* HEADER STYLES */
+header {
+  display: var(--flex); 
+  align-items: center; 
+  justify-content: space-between;
+  width: min(80%, 69.4375rem); 
+  margin-block-start: var(--space-5); 
+  margin-block-end: var(--space-7-8); 
+  margin-inline: auto; 
+}
+
+.logo {
+  background-image: url(../assets/images/logo.svg); 
+  background-size: cover;
+}
+
+.btn__free-consultation {
+  font-size: var(--font-size-0); 
+  font-style: normal; 
+  font-weight: var(--fw-700); 
+  padding-block: var(--space-3); 
+  padding-inline: var(--space-6); 
+  border-radius: var(--radius-11); 
+  color: var(--white); 
+  cursor: pointer; 
+}
+
+.btn__free-consultation-primary {
+  background-color: var(--black); 
+  transition: 0.6s background-color cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.btn__free-consultation-secondary {
+  background-color: var(--light-red); 
+  transition: 0.6s background-color cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+@media(any-hover: hover) {
+  .btn__free-consultation-primary:is(:hover) {
+    background-color: var(--galactic-blue); 
+  }
+
+  .btn__free-consultation-secondary:is(:hover) {
+    background-color: var(--summer-yellow); 
+  }
+}
+
+/* MAIN STYLES */
+
+/* EXPERTISE */
+.expertise__intro, .expertise__phrase {
+  text-align: center; 
+  margin-inline: auto; 
+}
+
+.expertise__intro {
+  margin-block-end: var(--space-5); 
+  width: 66.75%; 
+  /* max-width: 690px;  */
+}
+
+.expertise__phrase {
+  color: var(--medium-brown); 
+  font-weight: var(--fw-500); 
+  font-style: normal; 
+  line-height: var(--line-height-relaxed); 
+  font-size: var(--font-size-0);  
+  width: 66.75%; 
+  /* width: 421px;  */
+  margin-block-end: var(--space-7-8); 
+}
+
+ul[class="expertise__list"] {
+  width: min(80%, 69.4375rem); 
+  margin-inline: auto; 
+  list-style-type: none;
+  display: var(--grid); 
+  gap: var(--gap-15); 
+  grid-template-columns: repeat(2, 1fr);  
+  grid-template-areas: 
+          "graphic-design graphic-design"
+          "graphic-design graphic-design"
+          "ui-ux apps"
+          "illustrations illustrations"
+          "photography photography"
+          "motion-graphics motion-graphics"; 
+}
+
+
+li {
+  border-radius: var(--radius-4); 
+  padding: var(--gap-15); 
+  display: flex; 
+  align-items: flex-end; 
+}
+
+.expertise__list__link {
+  width: unset; 
+  height: unset; 
+  text-decoration: none; 
+  font-size: var(--font-size-1); 
+  color: var(--white); 
+  font-weight: var(--fw-700); 
+  font-style: normal; 
+  line-height: var(--line-height-normal); 
+
+}
+
+
+li[class="expertise__list__graphic-design"] {
+  grid-area: graphic-design; 
+  background-color: var(--galactic-blue); 
+  height: 22.75rem; 
+  background-image: url(../assets/images/pattern-graphic-design.svg); 
+  background-repeat: no-repeat; 
+  background-position: top 1.5rem right 1.5rem; 
+}
+
+li[class="expertise__list__ui-ux"] {
+  grid-area: ui-ux; 
+  height: 11.375rem; 
+  background-color: var(--summer-yellow); 
+}
+
+li[class="expertise__list__apps"] {
+  grid-area: apps; 
+  height: 11.375rem; 
+  background-color: var(--pink); 
+}
+
+li[class="expertise__list__illustrations"] {
+  grid-area: illustrations; 
+  height: 9.875rem; 
+  background-color: var(--light-red); 
+
+}
+
+li[class="expertise__list__photography"] {
+  grid-area: photography; 
+  height: 11.375rem; 
+  background-color: var(--cyan); 
+}
+
+
+li[class="expertise__list__motion-graphics"] {
+  grid-area: motion-graphics; 
+  height: 11.375rem; 
+  background-color:var(--dark-purple); 
+}
+
+
+
+/* ABOUT AMY */
+
+
+
+
+
+
+
+
+
+
+
+
+/* TODO */
+/* There is a possibility that the media query will start from 600px */
