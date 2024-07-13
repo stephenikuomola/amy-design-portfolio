@@ -19,7 +19,7 @@ This portfolio site was built to be responsive across three devices:
 --dark-purple: hsl(314, 45%, 23%);
 --light-cream: hsl(28, 100%, 97%);
 --white: hsl(0, 0%, 100%);
---cyan: hsl(172, 46%, 67%)
+--cyan: hsl(172, 46%, 67%);
 ```
 
 ## Gap
