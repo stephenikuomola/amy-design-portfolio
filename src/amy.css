@@ -10,7 +10,7 @@
   --dark-purple: hsl(314, 45%, 23%);
   --light-cream: hsl(28, 100%, 97%);
   --white: hsl(0, 0%, 100%);
-  --cyan: hsl(172, 46%, 67%);
+  --cyan: hsl(172, 46%, 57%);
 
   /* Gap */
   --gap-0: 0px;
@@ -127,6 +127,15 @@
   --space-7-8: clamp(1.875rem, 1.376rem + 3.4711vi, 4.5rem);
   --space-8-9: clamp(2.5rem, 1.6921rem + 5.6198vi, 6.75rem);
   --space-4-6: clamp(0.625rem, 0.3161rem + 2.1488vi, 2.25rem);
+
+  /* Screen Readers */
+  --sr-only-width: 1px;
+  --sr-only-height: 1px;
+  --sr-only-padding: 0px;
+  --sr-only-margin: -1px;
+  --sr-only-border-width: 0;
+  --sr-only-left: -1000px;
+  --sr-only-top: auto;
 }
 
 /* CSS RESETS */
@@ -144,6 +153,10 @@
 html {
   font-family: var(--ff-plus-jakarta-sans-sans-serif);
   overflow-x: hidden;
+  /* The style below prevents font-style inflation */
+  text-size-adjust: none;
+  -moz-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
 }
 
 p,
@@ -156,6 +169,14 @@ h6 {
   overflow: break-word;
 }
 
+/* Balance the text wrappings on the headings */
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+
 img {
   max-width: 100%;
   height: auto;
@@ -166,14 +187,20 @@ button {
   appearance: none;
   background: none;
   border: none;
+  font-family: inherit;
+  font-size: inherit;
 }
 
 a {
   text-decoration: none;
   width: var(--space-7);
   height: var(--space-7);
-  cursor: pointer;
   display: var(--block);
+}
+
+a:focus,
+button:focus {
+  outline: none;
 }
 
 body {
@@ -182,6 +209,21 @@ body {
   background-color: var(--light-cream);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* We make sure that the text areas without rows are not tiny */
+textarea:not([rows]) {
+  min-height: 10em;
+}
+
+/* Anything that has been anchored to should have an extra scroll margin */
+:target {
+  scroll-margin-block: 5ex;
+}
+
+/* Remove the mark of the list items */
+li {
+  list-style-type: none;
 }
 
 .heading-large {
@@ -205,28 +247,49 @@ body {
   line-height: var(--line-height-tight);
 }
 
-/* HEADER STYLES */
-header {
+/* The class will be applied to text that will only be accessible to screen readers */
+.sr-only {
+  overflow: hidden;
+  white-space: nowrap;
+  position: absolute;
+  border-width: var(--sr-only-border-width);
+  width: var(--sr-only-width);
+  height: var(--sr-only-height);
+  left: var(--sr-only-left);
+  top: var(--sr-only-top);
+  margin: var(--sr-only-margin);
+  padding: var(--sr-only-padding);
+}
+
+/* HEADER AND FOOTER STYLES */
+header,
+footer {
   display: var(--flex);
   align-items: center;
   justify-content: space-between;
-  width: min(80%, 69.4375rem);
+  width: min(90%, 69.4375rem);
   margin-block-start: var(--space-5);
   margin-block-end: var(--space-7-8);
   margin-inline: auto;
 }
 
-.logo {
+a[class="logo"] {
   background-image: url(../assets/images/logo.svg);
   background-size: cover;
+  cursor: pointer;
+}
+
+a[class="logo"]:focus-visible {
+  outline: 3px dashed var(--black);
+  outline-offset: 5px;
 }
 
 .btn__free-consultation {
   font-size: var(--font-size-0);
   font-style: normal;
   font-weight: var(--fw-700);
-  padding-block: var(--space-3);
-  padding-inline: var(--space-6);
+  padding-block: 0.5rem;
+  padding-inline: 1.75rem;
   border-radius: var(--radius-11);
   color: var(--white);
   cursor: pointer;
@@ -234,12 +297,25 @@ header {
 
 .btn__free-consultation-primary {
   background-color: var(--black);
-  transition: 0.6s background-color cubic-bezier(0.19, 1, 0.22, 1);
+  transition: 0.4s background-color cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .btn__free-consultation-secondary {
   background-color: var(--light-red);
-  transition: 0.6s background-color cubic-bezier(0.19, 1, 0.22, 1);
+  transition: 0.4s background-color cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* This takes care of focus indicators which provide visual cues to keyboard users. */
+.btn__free-consultation-primary:focus-visible {
+  outline: 3px dashed var(--black);
+  outline-offset: 5px;
+  background-color: var(--galactic-blue);
+}
+
+.btn__free-consultation-secondary:focus-visible {
+  outline: 3px dashed var(--light-red);
+  outline-offset: 5px;
+  background-color: var(--summer-yellow);
 }
 
 @media (any-hover: hover) {
@@ -264,7 +340,6 @@ header {
 .expertise__intro {
   margin-block-end: var(--space-5);
   width: 66.75%;
-  /* max-width: 690px;  */
 }
 
 .expertise__phrase {
@@ -274,16 +349,15 @@ header {
   line-height: var(--line-height-relaxed);
   font-size: var(--font-size-0);
   width: 66.75%;
-  /* width: 421px;  */
   margin-block-end: var(--space-7-8);
 }
 
 ul[class="expertise__list"] {
-  width: min(80%, 69.4375rem);
+  width: min(90%, 69.4375rem);
   margin-inline: auto;
-  list-style-type: none;
   display: var(--grid);
   gap: var(--gap-15);
+  height: 66.75rem;
   grid-template-columns: repeat(2, 1fr);
   grid-template-areas:
     "graphic-design graphic-design"
@@ -294,11 +368,42 @@ ul[class="expertise__list"] {
     "motion-graphics motion-graphics";
 }
 
-li {
+ul[class="expertise__list"] > li {
   border-radius: var(--radius-4);
   padding: var(--gap-15);
   display: flex;
   align-items: flex-end;
+  position: relative;
+}
+
+ul[class="expertise__list"] > li:has(:focus-visible) {
+  outline: 3px dashed var(--black);
+  outline-offset: 5px;
+}
+
+ul[class="expertise__list"] a::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  inset: 0;
+}
+
+ul[class="expertise__list"] a::before {
+  position: absolute;
+  display: block;
+  content: "";
+  bottom: -4px;
+  padding-block: 2px;
+  left: 0;
+  background-color: var(--black);
+  width: 0;
+  transition: width 0.4s ease 0s;
+}
+
+@media (any-hover: hover) {
+  ul[class="expertise__list"] > li:hover {
+    cursor: pointer;
+  }
 }
 
 .expertise__list__link {
@@ -310,48 +415,355 @@ li {
   font-weight: var(--fw-700);
   font-style: normal;
   line-height: var(--line-height-normal);
+  position: relative;
+  transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 li[class="expertise__list__graphic-design"] {
   grid-area: graphic-design;
-  background-color: var(--galactic-blue);
-  height: 22.75rem;
-  background-image: url(../assets/images/pattern-graphic-design.svg);
-  background-repeat: no-repeat;
-  background-position: top 1.5rem right 1.5rem;
+  background: var(--galactic-blue)
+    url(../assets/images/pattern-graphic-design.svg) top 24px right 24px/128px
+    192px no-repeat;
 }
 
 li[class="expertise__list__ui-ux"] {
   grid-area: ui-ux;
-  height: 11.375rem;
-  background-color: var(--summer-yellow);
+  background: var(--summer-yellow) url(../assets/images/pattern-ui-ux.svg) top
+    24px right 24px/64px 64px no-repeat;
 }
 
 li[class="expertise__list__apps"] {
   grid-area: apps;
-  height: 11.375rem;
-  background-color: var(--pink);
+  background: var(--pink) url(../assets/images/pattern-apps.svg) top 24px right
+    24px/64px 64px no-repeat;
 }
 
 li[class="expertise__list__illustrations"] {
   grid-area: illustrations;
-  height: 9.875rem;
-  background-color: var(--light-red);
+  background: var(--light-red) url(../assets/images/pattern-illustrations.svg)
+    top 24px right 24px/128px 64px no-repeat;
 }
 
 li[class="expertise__list__photography"] {
   grid-area: photography;
-  height: 11.375rem;
-  background-color: var(--cyan);
+  background: var(--cyan) url(../assets/images/pattern-photography.svg) top 24px
+    right 24px/160px 64px no-repeat;
 }
 
 li[class="expertise__list__motion-graphics"] {
   grid-area: motion-graphics;
-  height: 11.375rem;
-  background-color: var(--dark-purple);
+  background: var(--dark-purple)
+    url(../assets/images/pattern-motion-graphics.svg) top 24px right 24px/128px
+    64px no-repeat;
+}
+
+li[class^="expertise__list__"]:has(a) {
+  transition: background-size 0.4s ease-out;
+}
+
+@media (any-hover: hover) {
+  li[class="expertise__list__graphic-design"]:is(:hover, :has(:focus-visible)) {
+    background-size: 136px 200px;
+  }
+
+  li[class="expertise__list__ui-ux"]:is(:hover, :has(:focus-visible)),
+  li[class="expertise__list__apps"]:is(:hover, :has(:focus-visible)) {
+    background-size: 72px 72px;
+  }
+
+  li[class="expertise__list__photography"]:is(:hover, :has(:focus-visible)) {
+    background-size: 168px 72px;
+  }
+
+  li[class="expertise__list__motion-graphics"]:is(:hover, :has(:focus-visible)),
+  li[class="expertise__list__illustrations"]:is(:hover, :has(:focus-visible)) {
+    background-size: 136px 72px;
+  }
+
+  li:is(:hover, :has(:focus-visible)) a {
+    transform: translateY(-6px);
+  }
+
+  li:is(:hover, :has(:focus-visible)) a::before {
+    width: 100%;
+  }
 }
 
 /* ABOUT AMY */
+section[class="about"] > div {
+  width: min(90%, 69.4375rem);
+  margin-inline: auto;
+  margin-block: 6.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
 
-/* TODO */
-/* There is a possibility that the media query will start from 600px */
+section[class="about"] img {
+  width: 17.3rem;
+  margin-inline: auto;
+}
+
+div[class="about-wrapper"] {
+  text-align: center;
+}
+
+.about__intro,
+.about__description {
+  margin-block-end: var(--space-6);
+}
+
+.about__description {
+  font-size: var(--font-size-1);
+  font-style: normal;
+  font-weight: 500;
+  color: var(--medium-brown);
+  line-height: var(--line-height-relaxed);
+}
+
+/* WORK */
+section[class~="myWork"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+  padding-block-end: 1.25rem; 
+}
+
+.myWork__intro {
+  text-align: center;
+}
+
+article[class="myWork__carousel"] {
+  -webkit-user-select: none;
+  user-select: none;
+  overflow: hidden;
+}
+
+ul[class~="myWork__slides"] {
+  display: flex;
+  gap: var(--space-5);
+  transition: none; 
+  width: 100%; 
+}
+
+.myWork__slides.on-transition {
+  transition: transform 3s cubic-bezier(0.19, 1, 0.22, 1); 
+}
+
+li[class="myWork__slide"] {
+  flex: 0 0 78.3%;
+  max-width:540px;
+  border-radius: var(--radius-5);
+  overflow: hidden;
+}
+
+li[class="myWork__slide"] img {
+  pointer-events: none;
+}
+
+ul[class="myWork__BtnControls"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-6_25);
+}
+
+.btn__slider {
+  background-color: var(--black);
+  border-radius: 50%;
+  padding-block: 1.5rem;
+  padding-inline: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.4s background-color cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.btn__slider:focus-visible {
+  outline: 3px dashed var(--black);
+  outline-offset: 3px;
+  background-color: var(--galactic-blue);
+}
+
+@media (any-hover:hover) {
+  .btn__slider:hover {
+    background-color: var(--galactic-blue); 
+  }
+}
+
+.btn__slider img {
+  width: 15px;
+  height: 16px;
+}
+
+/* CONTACT */
+section[class="contact"] > div {
+  width: min(90%, 69.4375rem);
+  margin-inline: auto;
+  background-color: var(--black);
+  margin-block-start: 6.25rem;
+  margin-block-end: 2.625rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-5);
+  text-align: center;
+  padding-inline: 1.5rem;
+  align-items: center;
+  padding-block: 3.0625rem 3rem;
+}
+
+.contact__intro {
+  color: var(--light-cream);
+  margin-block-end: 1.5rem;
+}
+
+.contact__description {
+  color: var(--light-cream);
+  font-size: var(--font-size-1);
+  font-style: normal;
+  font-weight: 500;
+  line-height: var(--line-height-relaxed);
+  margin-block-end: 1.5rem;
+}
+
+@media only screen and (min-width: 48em) {
+  .expertise__intro {
+    width: unset;
+  }
+
+  .expertise__phrase {
+    width: 421px;
+  }
+
+  ul[class="expertise__list"] {
+    height: 34.125rem;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas:
+      "graphic-design graphic-design ui-ux apps"
+      "graphic-design graphic-design illustrations illustrations"
+      "photography photography motion-graphics motion-graphics";
+  }
+
+  section[class="about"] > div {
+    flex-direction: row;
+    text-align: left;
+    position: relative;
+  }
+
+  div[class="image-wrapper"] {
+    flex-basis: 50%;
+  }
+
+  div[class="image-wrapper"] > img {
+    width: 22.75rem;
+    position: absolute;
+    left: -83px;
+  }
+
+  div[class="about-wrapper"] {
+    text-align: unset;
+    flex-basis: 65%;
+  }
+
+  section[class="contact"] > div {
+    padding-inline: 4.69rem;
+    padding-block-start: 3.5rem;
+  }
+
+  .btn__free-consultation {
+    font-size: var(--font-size-0);
+    font-style: normal;
+    font-weight: var(--fw-700);
+    padding-block: 0.875rem;
+    padding-inline: 2.81rem;
+    border-radius: var(--radius-11);
+    color: var(--white);
+    cursor: pointer;
+  }
+}
+
+@media only screen and (min-width: 64em) {
+  .heading-medium {
+    font-size: 2.5rem;
+  }
+
+  .about__description,
+  .contact__description {
+    font-size: 0.9375rem;
+  }
+
+  .expertise__phrase {
+    width: 586px;
+  }
+
+  div[class="image-wrapper"] > img {
+    position: unset;
+    width: 27.8rem;
+    margin-inline: unset;
+  }
+
+  section[class="about"] > div {
+    align-items: center;
+  }
+
+  section[class="contact"] > div {
+    flex-direction: row;
+    padding-inline-start: 4.06rem;
+    text-align: left;
+    gap: 6rem;
+    padding-block: 5.0625rem 5rem;
+    justify-content: space-between;
+  }
+
+  .contact-wrapper {
+    flex-basis: 59%;
+  }
+
+  .contact__description {
+    margin-block-end: unset;
+  }
+
+  ul[class="expertise__list"] {
+    height: 22.75rem;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-areas:
+      "graphic-design graphic-design ui-ux apps photography photography"
+      "graphic-design graphic-design illustrations illustrations motion-graphics motion-graphics ";
+  }
+}
+
+@media only screen and (min-width: 75em) {
+  .expertise__phrase {
+    width: 690px;
+  }
+
+  .about__intro {
+    width: 552px;
+  }
+
+  .about__description {
+    width: 549px;
+  }
+
+  .contact__description {
+    width: 537px;
+  }
+
+  .about__description,
+  .contact__description {
+    font-size: 1.125rem;
+  }
+
+  section[class="contact"] > div {
+    gap: 11rem;
+  }
+
+  section[class="about"] > div {
+    gap: 7.8125rem;
+  }
+
+  .contact-wrapper {
+    flex-basis: 53%;
+  }
+}
