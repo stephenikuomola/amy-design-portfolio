@@ -526,7 +526,7 @@ section[class~="myWork"] {
   display: flex;
   flex-direction: column;
   gap: var(--space-7);
-  padding-block-end: 1.25rem; 
+  padding-block-end: 1.25rem;
 }
 
 .myWork__intro {
@@ -542,23 +542,21 @@ article[class="myWork__carousel"] {
 ul[class~="myWork__slides"] {
   display: flex;
   gap: var(--space-5);
-  transition: none; 
-  width: 100%; 
+  transition: none;
+  width: 100%;
 }
 
+ul[class~='myWork__slides'] img {pointer-events: none;}
+
 .myWork__slides.on-transition {
-  transition: transform 3s cubic-bezier(0.19, 1, 0.22, 1); 
+  transition: transform 3s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 li[class="myWork__slide"] {
   flex: 0 0 78.3%;
-  max-width:540px;
+  max-width: 540px;
   border-radius: var(--radius-5);
   overflow: hidden;
-}
-
-li[class="myWork__slide"] img {
-  pointer-events: none;
 }
 
 ul[class="myWork__BtnControls"] {
@@ -586,9 +584,9 @@ ul[class="myWork__BtnControls"] {
   background-color: var(--galactic-blue);
 }
 
-@media (any-hover:hover) {
+@media (any-hover: hover) {
   .btn__slider:hover {
-    background-color: var(--galactic-blue); 
+    background-color: var(--galactic-blue);
   }
 }
 
