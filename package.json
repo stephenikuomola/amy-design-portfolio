@@ -22,6 +22,7 @@
   },
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "dependencies": {
+    "detect-it": "^4.0.1",
     "eslint-plugin-jsdoc": "^48.7.0",
     "eslint-plugin-package-json": "^0.15.2",
     "eslint-plugin-perfectionist": "^2.11.0",
