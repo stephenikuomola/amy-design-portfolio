@@ -3,7 +3,7 @@
   --light-red: #eb7566;
   --black: #030303;
   --summer-yellow: #f6a660;
-  --cyan: #84d2c7;
+  --cyan: #5fc4b6;
   --medium-brown: #78736d;
   --pink: #f3a0a0;
   --dark-purple: #552049;
@@ -113,6 +113,13 @@
   --space-7-8: clamp(1.875rem, 1.376rem + 3.4711vi, 4.5rem);
   --space-8-9: clamp(2.5rem, 1.6921rem + 5.6198vi, 6.75rem);
   --space-4-6: clamp(.625rem, .3161rem + 2.1488vi, 2.25rem);
+  --sr-only-width: 1px;
+  --sr-only-height: 1px;
+  --sr-only-padding: 0px;
+  --sr-only-margin: -1px;
+  --sr-only-border-width: 0;
+  --sr-only-left: -1000px;
+  --sr-only-top: auto;
 }
 
 * {
@@ -126,11 +133,17 @@
 
 html {
   font-family: var(--ff-plus-jakarta-sans-sans-serif);
+  -moz-text-size-adjust: none;
+  text-size-adjust: none;
   overflow-x: hidden;
 }
 
 p, h1, h2, h3, h4, h5, h6 {
   overflow: break-word;
+}
+
+h1, h2, h3, h4 {
+  text-wrap: balance;
 }
 
 img {
@@ -141,6 +154,8 @@ img {
 
 button {
   appearance: none;
+  font-family: inherit;
+  font-size: inherit;
   background: none;
   border: none;
 }
@@ -148,9 +163,12 @@ button {
 a {
   width: var(--space-7);
   height: var(--space-7);
-  cursor: pointer;
   display: var(--block);
   text-decoration: none;
+}
+
+a:focus, button:focus {
+  outline: none;
 }
 
 body {
@@ -159,6 +177,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
   width: 100%;
   min-height: 100vh;
+}
+
+textarea:not([rows]) {
+  min-height: 10em;
+}
+
+:target {
+  scroll-margin-block: 5ex;
+}
+
+li {
+  list-style-type: none;
 }
 
 .heading-large {
@@ -182,40 +212,71 @@ body {
   line-height: var(--line-height-tight);
 }
 
-header {
+.sr-only {
+  white-space: nowrap;
+  border-width: var(--sr-only-border-width);
+  width: var(--sr-only-width);
+  height: var(--sr-only-height);
+  left: var(--sr-only-left);
+  top: var(--sr-only-top);
+  margin: var(--sr-only-margin);
+  padding: var(--sr-only-padding);
+  position: absolute;
+  overflow: hidden;
+}
+
+header, footer {
   display: var(--flex);
   justify-content: space-between;
   align-items: center;
-  width: min(80%, 69.4375rem);
+  width: min(90%, 69.4375rem);
   margin-block-start: var(--space-5);
   margin-block-end: var(--space-7-8);
   margin-inline: auto;
 }
 
-.logo {
+a[class="logo"] {
+  cursor: pointer;
   background-image: url("logo.92136df5.svg");
   background-size: cover;
+}
+
+a[class="logo"]:focus-visible {
+  outline: 3px dashed var(--black);
+  outline-offset: 5px;
 }
 
 .btn__free-consultation {
   font-size: var(--font-size-0);
   font-style: normal;
   font-weight: var(--fw-700);
-  padding-block: var(--space-3);
-  padding-inline: var(--space-6);
   border-radius: var(--radius-11);
   color: var(--white);
   cursor: pointer;
+  padding-block: .5rem;
+  padding-inline: 1.75rem;
 }
 
 .btn__free-consultation-primary {
   background-color: var(--black);
-  transition: background-color .6s cubic-bezier(.19, 1, .22, 1);
+  transition: background-color .4s cubic-bezier(.19, 1, .22, 1);
 }
 
 .btn__free-consultation-secondary {
   background-color: var(--light-red);
-  transition: background-color .6s cubic-bezier(.19, 1, .22, 1);
+  transition: background-color .4s cubic-bezier(.19, 1, .22, 1);
+}
+
+.btn__free-consultation-primary:focus-visible {
+  outline: 3px dashed var(--black);
+  outline-offset: 5px;
+  background-color: var(--galactic-blue);
+}
+
+.btn__free-consultation-secondary:focus-visible {
+  outline: 3px dashed var(--light-red);
+  outline-offset: 5px;
+  background-color: var(--summer-yellow);
 }
 
 @media (any-hover: hover) {
@@ -258,16 +319,47 @@ ul[class="expertise__list"] {
                        "illustrations illustrations"
                        "photography photography"
                        "motion-graphics motion-graphics";
-  width: min(80%, 69.4375rem);
+  width: min(90%, 69.4375rem);
+  height: 66.75rem;
   margin-inline: auto;
-  list-style-type: none;
 }
 
-li {
+ul[class="expertise__list"] > li {
   border-radius: var(--radius-4);
   padding: var(--gap-15);
   align-items: flex-end;
   display: flex;
+  position: relative;
+}
+
+ul[class="expertise__list"] > li:has(:focus-visible) {
+  outline: 3px dashed var(--black);
+  outline-offset: 5px;
+}
+
+ul[class="expertise__list"] a:after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  inset: 0;
+}
+
+ul[class="expertise__list"] a:before {
+  content: "";
+  background-color: var(--black);
+  width: 0;
+  padding-block: 2px;
+  transition: width .4s;
+  display: block;
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+}
+
+@media (any-hover: hover) {
+  ul[class="expertise__list"] > li:hover {
+    cursor: pointer;
+  }
 }
 
 .expertise__list__link {
@@ -279,44 +371,337 @@ li {
   font-style: normal;
   line-height: var(--line-height-normal);
   text-decoration: none;
+  transition: transform .4s cubic-bezier(.19, 1, .22, 1);
+  position: relative;
 }
 
 li[class="expertise__list__graphic-design"] {
-  background-color: var(--galactic-blue);
-  background-image: url("pattern-graphic-design.dff34ed3.svg");
-  background-position: right 1.5rem top 1.5rem;
-  background-repeat: no-repeat;
+  background: var(--galactic-blue) url("pattern-graphic-design.dff34ed3.svg") top 24px right 24px / 128px 192px no-repeat;
   grid-area: graphic-design;
-  height: 22.75rem;
 }
 
 li[class="expertise__list__ui-ux"] {
-  background-color: var(--summer-yellow);
+  background: var(--summer-yellow) url("pattern-ui-ux.81b0f9c1.svg") top 24px right 24px / 64px 64px no-repeat;
   grid-area: ui-ux;
-  height: 11.375rem;
 }
 
 li[class="expertise__list__apps"] {
-  background-color: var(--pink);
+  background: var(--pink) url("pattern-apps.cfafbe73.svg") top 24px right 24px / 64px 64px no-repeat;
   grid-area: apps;
-  height: 11.375rem;
 }
 
 li[class="expertise__list__illustrations"] {
-  background-color: var(--light-red);
+  background: var(--light-red) url("pattern-illustrations.fbacafdd.svg") top 24px right 24px / 128px 64px no-repeat;
   grid-area: illustrations;
-  height: 9.875rem;
 }
 
 li[class="expertise__list__photography"] {
-  background-color: var(--cyan);
+  background: var(--cyan) url("pattern-photography.e895bfba.svg") top 24px right 24px / 160px 64px no-repeat;
   grid-area: photography;
-  height: 11.375rem;
 }
 
 li[class="expertise__list__motion-graphics"] {
-  background-color: var(--dark-purple);
+  background: var(--dark-purple) url("pattern-motion-graphics.413ca378.svg") top 24px right 24px / 128px 64px no-repeat;
   grid-area: motion-graphics;
-  height: 11.375rem;
+}
+
+li[class^="expertise__list__"]:has(a) {
+  transition: background-size .4s ease-out;
+}
+
+@media (any-hover: hover) {
+  li[class="expertise__list__graphic-design"]:is(:hover, :has(:focus-visible)) {
+    background-size: 136px 200px;
+  }
+
+  li[class="expertise__list__ui-ux"]:is(:hover, :has(:focus-visible)), li[class="expertise__list__apps"]:is(:hover, :has(:focus-visible)) {
+    background-size: 72px 72px;
+  }
+
+  li[class="expertise__list__photography"]:is(:hover, :has(:focus-visible)) {
+    background-size: 168px 72px;
+  }
+
+  li[class="expertise__list__motion-graphics"]:is(:hover, :has(:focus-visible)), li[class="expertise__list__illustrations"]:is(:hover, :has(:focus-visible)) {
+    background-size: 136px 72px;
+  }
+
+  li:is(:hover, :has(:focus-visible)) a {
+    transform: translateY(-6px);
+  }
+
+  li:is(:hover, :has(:focus-visible)) a:before {
+    width: 100%;
+  }
+}
+
+section[class="about"] > div {
+  flex-direction: column;
+  gap: 2.5rem;
+  width: min(90%, 69.4375rem);
+  margin-block: 6.25rem;
+  margin-inline: auto;
+  display: flex;
+}
+
+section[class="about"] img {
+  width: 17.3rem;
+  margin-inline: auto;
+}
+
+div[class="about-wrapper"] {
+  text-align: center;
+}
+
+.about__intro, .about__description {
+  margin-block-end: var(--space-6);
+}
+
+.about__description {
+  font-size: var(--font-size-1);
+  color: var(--medium-brown);
+  font-style: normal;
+  font-weight: 500;
+  line-height: var(--line-height-relaxed);
+}
+
+section[class~="myWork"] {
+  gap: var(--space-7);
+  flex-direction: column;
+  padding-block-end: 1.25rem;
+  display: flex;
+}
+
+.myWork__intro {
+  text-align: center;
+}
+
+article[class="myWork__carousel"] {
+  -webkit-user-select: none;
+  user-select: none;
+  overflow: hidden;
+}
+
+ul[class~="myWork__slides"] {
+  gap: var(--space-5);
+  width: 100%;
+  transition: none;
+  display: flex;
+}
+
+ul[class~="myWork__slides"] img {
+  pointer-events: none;
+}
+
+.myWork__slides.on-transition {
+  transition: transform 3s cubic-bezier(.19, 1, .22, 1);
+}
+
+li[class="myWork__slide"] {
+  border-radius: var(--radius-5);
+  flex: 0 0 78.3%;
+  max-width: 540px;
+  overflow: hidden;
+}
+
+ul[class="myWork__BtnControls"] {
+  justify-content: center;
+  align-items: center;
+  gap: var(--gap-6_25);
+  display: flex;
+}
+
+.btn__slider {
+  background-color: var(--black);
+  cursor: pointer;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  padding-block: 1.5rem;
+  padding-inline: 1.5rem;
+  transition: background-color .4s cubic-bezier(.19, 1, .22, 1);
+  display: flex;
+}
+
+.btn__slider:focus-visible {
+  outline: 3px dashed var(--black);
+  outline-offset: 3px;
+  background-color: var(--galactic-blue);
+}
+
+@media (any-hover: hover) {
+  .btn__slider:hover {
+    background-color: var(--galactic-blue);
+  }
+}
+
+.btn__slider img {
+  width: 15px;
+  height: 16px;
+}
+
+section[class="contact"] > div {
+  background-color: var(--black);
+  border-radius: var(--radius-5);
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  width: min(90%, 69.4375rem);
+  margin-block: 6.25rem 2.625rem;
+  margin-inline: auto;
+  padding-block: 3.0625rem 3rem;
+  padding-inline: 1.5rem;
+  display: flex;
+}
+
+.contact__intro {
+  color: var(--light-cream);
+  margin-block-end: 1.5rem;
+}
+
+.contact__description {
+  color: var(--light-cream);
+  font-size: var(--font-size-1);
+  font-style: normal;
+  font-weight: 500;
+  line-height: var(--line-height-relaxed);
+  margin-block-end: 1.5rem;
+}
+
+@media only screen and (width >= 48em) {
+  .expertise__intro {
+    width: unset;
+  }
+
+  .expertise__phrase {
+    width: 421px;
+  }
+
+  ul[class="expertise__list"] {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas: "graphic-design graphic-design ui-ux apps"
+                         "graphic-design graphic-design illustrations illustrations"
+                         "photography photography motion-graphics motion-graphics";
+    height: 34.125rem;
+  }
+
+  section[class="about"] > div {
+    text-align: left;
+    flex-direction: row;
+    position: relative;
+  }
+
+  div[class="image-wrapper"] {
+    flex-basis: 50%;
+  }
+
+  div[class="image-wrapper"] > img {
+    width: 22.75rem;
+    position: absolute;
+    left: -83px;
+  }
+
+  div[class="about-wrapper"] {
+    text-align: unset;
+    flex-basis: 65%;
+  }
+
+  section[class="contact"] > div {
+    padding-block-start: 3.5rem;
+    padding-inline: 4.69rem;
+  }
+
+  .btn__free-consultation {
+    font-size: var(--font-size-0);
+    font-style: normal;
+    font-weight: var(--fw-700);
+    border-radius: var(--radius-11);
+    color: var(--white);
+    cursor: pointer;
+    padding-block: .875rem;
+    padding-inline: 2.81rem;
+  }
+}
+
+@media only screen and (width >= 64em) {
+  .heading-medium {
+    font-size: 2.5rem;
+  }
+
+  .about__description, .contact__description {
+    font-size: .9375rem;
+  }
+
+  .expertise__phrase {
+    width: 586px;
+  }
+
+  div[class="image-wrapper"] > img {
+    position: unset;
+    margin-inline: unset;
+    width: 27.8rem;
+  }
+
+  section[class="about"] > div {
+    align-items: center;
+  }
+
+  section[class="contact"] > div {
+    text-align: left;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 6rem;
+    padding-block: 5.0625rem 5rem;
+    padding-inline-start: 4.06rem;
+  }
+
+  .contact-wrapper {
+    flex-basis: 59%;
+  }
+
+  .contact__description {
+    margin-block-end: unset;
+  }
+
+  ul[class="expertise__list"] {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-areas: "graphic-design graphic-design ui-ux apps photography photography"
+                         "graphic-design graphic-design illustrations illustrations motion-graphics motion-graphics";
+    height: 22.75rem;
+  }
+}
+
+@media only screen and (width >= 75em) {
+  .expertise__phrase {
+    width: 690px;
+  }
+
+  .about__intro {
+    width: 552px;
+  }
+
+  .about__description {
+    width: 549px;
+  }
+
+  .contact__description {
+    width: 537px;
+  }
+
+  .about__description, .contact__description {
+    font-size: 1.125rem;
+  }
+
+  section[class="contact"] > div {
+    gap: 11rem;
+  }
+
+  section[class="about"] > div {
+    gap: 7.8125rem;
+  }
+
+  .contact-wrapper {
+    flex-basis: 53%;
+  }
 }
 /*# sourceMappingURL=index.b8c92f24.css.map */
