@@ -584,8 +584,10 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 }
 
 },{}],"I6z2s":[function(require,module,exports) {
-// Dynamically add the button since the functionality will be implemented using JavaScript.
+// We want to import a feature detection from the detect-it package
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+var _detectIt = require("detect-it");
+// Dynamically add the button since the functionality will be implemented using JavaScript.
 var _iconArrowLeftSvg = require("../assets/images/icon-arrow-left.svg");
 var _iconArrowLeftSvgDefault = parcelHelpers.interopDefault(_iconArrowLeftSvg);
 var _iconArrowRightSvg = require("../assets/images/icon-arrow-right.svg");
@@ -717,6 +719,8 @@ const clonedSlides = createCloneSlides();
  * @param {string} direction
  * This parameter is a string value indicating the direction depending on what the user is using to move the slider. It could be button direction, keyboard arrow keys, mousedown/mouseup, and touch effect.
  */ function updateSlide(direction) {
+    // Add the transition effect when the slide is updated
+    slider.classList.add("on-transition");
     if (direction == NEXT_ITEM) {
         if (counter >= firstCloneNodeIndex) offsetSlider(secondNodeIndex);
         else {
@@ -749,10 +753,15 @@ const clonedSlides = createCloneSlides();
  * @param {number} distanceTrigger
  * This helps us know how long the user should apply the pointer across slide before we change slide.
  */ function trackDistances(distanceCovered, distanceTrigger) {
-    if (distanceCovered > distanceTrigger) // Previous Slide
-    updateSlide(NEXT_ITEM);
-    else if (distanceCovered < -distanceTrigger) // Next Slide
-    updateSlide(PREVIOUS_ITEM);
+    if (distanceCovered > distanceTrigger) {
+        // Previous Slide
+        const direction = NEXT_ITEM;
+        updateSlide(direction);
+    } else if (distanceCovered < -distanceTrigger) {
+        // Next Slide
+        const direction = PREVIOUS_ITEM;
+        updateSlide(direction);
+    }
 }
 /**
  * This function will set the reset press/touch state
@@ -763,12 +772,10 @@ const clonedSlides = createCloneSlides();
     if (!ispressed && evtObj instanceof MouseEvent) {
         ispressed = true;
         startMouseTouchX = evtObj.clientX;
-        console.log(startMouseTouchX);
     }
     if (!istouched && evtObj instanceof TouchEvent) {
         istouched = true;
         startMouseTouchX = evtObj.changedTouches[0].pageX;
-        console.log(startMouseTouchX);
     }
     slider.style.cursor = "grabbing";
 }
@@ -789,14 +796,27 @@ const clonedSlides = createCloneSlides();
     }
     // We monitor the distance covered by the touch pointer and track the direction by using a tracker to move to the next/prev slide.
     if (istouched && evtObj instanceof TouchEvent) {
-        //TODO We prevent the mouse from being sent. However, I noticed this does not work on chrome and it seems that the non-passive event listener has been place by the browser. I need to make the listener passive so that it prevents the listener from blocking the page rendering while the user is scrolling.
-        evtObj.preventDefault();
         const endMouseTouchX = evtObj.changedTouches[0].pageX;
         const distanceTouchX = endMouseTouchX - startMouseTouchX;
         istouched = false;
         trackDistances(distanceTouchX, distanceTrigger);
     }
     slider.style.cursor = "grab";
+}
+/**
+ * This function handles the keyboard navigation
+ * @param {KeyboardEvent} evtObj
+ * The keyboard event object that described the user interaction with the keyboard.
+ */ function handleKeyNav(evtObj) {
+    if (evtObj instanceof KeyboardEvent) {
+        if (evtObj.key === "ArrowRight") {
+            const direction = NEXT_ITEM;
+            updateSlide(direction);
+        } else if (evtObj.key === "ArrowLeft") {
+            const direction = PREVIOUS_ITEM;
+            updateSlide(direction);
+        }
+    }
 }
 // Handling the Button events
 const sliderButtons = document.querySelectorAll(".btn__slider");
@@ -808,17 +828,27 @@ sliderButtons.forEach(function(sliderButton) {
     });
 });
 // Navigation using mouse/track pads and fingers
-sliderWrapper.addEventListener("touchstart", startMouseTouchNav);
 sliderWrapper.addEventListener("mousedown", startMouseTouchNav);
 sliderWrapper.addEventListener("mouseup", endMouseTouchNav);
-sliderWrapper.addEventListener("touchend", endMouseTouchNav);
-// TODO Keyboard navigation
+// Older browser try to interpret object in the third argument as a try value in the capture argument. We need to use a feature detection when using this API prevent possible unforeseen results. The aim is to create a passive listener to prevent the preventDefault() from being called on the event making it to block scrolling.
+sliderWrapper.addEventListener("touchstart", startMouseTouchNav, (0, _detectIt.supportsPassiveEvents) ? {
+    capture: false,
+    passive: true
+} : false);
+sliderWrapper.addEventListener("touchend", endMouseTouchNav, (0, _detectIt.supportsPassiveEvents) ? {
+    capture: false,
+    passive: true
+} : false);
+// TODO Carry out animation of the different sections when they come into the view of the user on scroll. You can use the IntersectionObserver API to perform this task.
+// TODO Using JavaScript mark when the transition ends and then remove the transition, then update the live region.
 // When the page loads we want the fifth slide to always be at the center of the view.
 window.addEventListener("load", initialSlideIndex);
 // When the user resizes the window we want the any of the slide to always be at the center of the view.
 window.addEventListener("resize", debounce);
+// When the user keys down on the right and left arrow keys we want to navigate the slider as well making it accessible for keyboard users.
+window.addEventListener("keydown", handleKeyNav);
 
-},{"../assets/images/icon-arrow-left.svg":"jkSEF","../assets/images/icon-arrow-right.svg":"9fw67","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jkSEF":[function(require,module,exports) {
+},{"../assets/images/icon-arrow-left.svg":"jkSEF","../assets/images/icon-arrow-right.svg":"9fw67","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","detect-it":"dz1vJ"}],"jkSEF":[function(require,module,exports) {
 module.exports = require("740a9fb16f758d20").getBundleURL("4URB8") + "icon-arrow-left.0a702405.svg" + "?" + Date.now();
 
 },{"740a9fb16f758d20":"lgJ39"}],"lgJ39":[function(require,module,exports) {
@@ -889,6 +919,87 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}]},["7OPMX","I6z2s"], "I6z2s", "parcelRequire7674")
+},{}],"dz1vJ":[function(require,module,exports) {
+// so it doesn't throw if no window or matchMedia
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "deviceType", ()=>deviceType);
+parcelHelpers.export(exports, "primaryInput", ()=>primaryInput);
+parcelHelpers.export(exports, "supportsPassiveEvents", ()=>supportsPassiveEvents);
+parcelHelpers.export(exports, "supportsPointerEvents", ()=>supportsPointerEvents);
+parcelHelpers.export(exports, "supportsTouchEvents", ()=>supportsTouchEvents);
+var w = typeof window !== "undefined" ? window : {
+    screen: {},
+    navigator: {}
+};
+var matchMedia = (w.matchMedia || function() {
+    return {
+        matches: false
+    };
+}).bind(w);
+// passive events test
+// adapted from https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
+var passiveOptionAccessed = false;
+var options = {
+    get passive () {
+        return passiveOptionAccessed = true;
+    }
+};
+// have to set and remove a no-op listener instead of null
+// (which was used previously), because Edge v15 throws an error
+// when providing a null callback.
+// https://github.com/rafgraph/detect-passive-events/pull/3
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+var noop = function() {};
+w.addEventListener && w.addEventListener("p", noop, options);
+w.removeEventListener && w.removeEventListener("p", noop, false);
+var supportsPassiveEvents = passiveOptionAccessed;
+var supportsPointerEvents = "PointerEvent" in w;
+var onTouchStartInWindow = "ontouchstart" in w;
+var touchEventInWindow = "TouchEvent" in w;
+// onTouchStartInWindow is the old-old-legacy way to determine a touch device
+// and many websites interpreted it to mean that the device is a touch only phone,
+// so today browsers on a desktop/laptop computer with a touch screen (primary input mouse)
+// have onTouchStartInWindow as false (to prevent from being confused with a
+// touchOnly phone) even though they support the TouchEvents API, so need to check
+// both onTouchStartInWindow and touchEventInWindow for TouchEvent support,
+// however, some browsers (chromium) support the TouchEvents API even when running on
+// a mouse only device (touchEventInWindow true, but onTouchStartInWindow false)
+// so the touchEventInWindow check needs to include an coarse pointer media query
+var supportsTouchEvents = onTouchStartInWindow || touchEventInWindow && matchMedia("(any-pointer: coarse)").matches;
+var hasTouch = (w.navigator.maxTouchPoints || 0) > 0 || supportsTouchEvents;
+// userAgent is used as a backup to correct for known device/browser bugs
+// and when the browser doesn't support interaction media queries (pointer and hover)
+// see https://caniuse.com/css-media-interaction
+var userAgent = w.navigator.userAgent || "";
+// iPads now support a mouse that can hover, however the media query interaction
+// feature results always say iPads only have a coarse pointer that can't hover
+// even when a mouse is connected (anyFine and anyHover are always false),
+// this unfortunately indicates a touch only device but iPads should
+// be classified as a hybrid device, so determine if it is an iPad
+// to indicate it should be treated as a hybrid device with anyHover true
+var isIPad = matchMedia("(pointer: coarse)").matches && // both iPad and iPhone can "request desktop site", which sets the userAgent to Macintosh
+// so need to check both userAgents to determine if it is an iOS device
+// and screen size to separate iPad from iPhone
+/iPad|Macintosh/.test(userAgent) && Math.min(w.screen.width || 0, w.screen.height || 0) >= 768;
+var hasCoarsePrimaryPointer = (matchMedia("(pointer: coarse)").matches || // if the pointer is not coarse and not fine then the browser doesn't support
+// interaction media queries (see https://caniuse.com/css-media-interaction)
+// so if it has onTouchStartInWindow assume it has a coarse primary pointer
+!matchMedia("(pointer: fine)").matches && onTouchStartInWindow) && // bug in firefox (as of v81) on hybrid windows devices where the interaction media queries
+// always indicate a touch only device (only has a coarse pointer that can't hover)
+// so assume that the primary pointer is not coarse for firefox windows
+!/Windows.*Firefox/.test(userAgent);
+var hasAnyHoverOrAnyFinePointer = matchMedia("(any-pointer: fine)").matches || matchMedia("(any-hover: hover)").matches || // iPads might have an input device that can hover, so assume it has anyHover
+isIPad || // if no onTouchStartInWindow then the browser is indicating that it is not a touch only device
+// see above note for supportsTouchEvents
+!onTouchStartInWindow;
+// a hybrid device is one that both hasTouch and
+// any input can hover or has a fine pointer, or the primary pointer is not coarse
+// if it's not a hybrid, then if it hasTouch it's touchOnly, otherwise it's mouseOnly
+var deviceType = hasTouch && (hasAnyHoverOrAnyFinePointer || !hasCoarsePrimaryPointer) ? "hybrid" : hasTouch ? "touchOnly" : "mouseOnly";
+var primaryInput = deviceType === "mouseOnly" ? "mouse" : deviceType === "touchOnly" ? "touch" : // assume the primaryInput is touch, otherwise assume it's mouse
+hasCoarsePrimaryPointer ? "touch" : "mouse";
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["7OPMX","I6z2s"], "I6z2s", "parcelRequire7674")
 
 //# sourceMappingURL=index.d2c91199.js.map

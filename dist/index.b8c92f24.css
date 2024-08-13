@@ -494,7 +494,7 @@ ul[class~="myWork__slides"] img {
 }
 
 .myWork__slides.on-transition {
-  transition: transform 3s cubic-bezier(.19, 1, .22, 1);
+  transition: transform 6s cubic-bezier(.19, 1, .22, 1);
 }
 
 li[class="myWork__slide"] {
