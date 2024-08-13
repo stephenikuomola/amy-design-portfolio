@@ -1,3 +1,6 @@
+// We want to import a feature detection from the detect-it package
+import { supportsPassiveEvents } from 'detect-it';
+
 // Dynamically add the button since the functionality will be implemented using JavaScript.
 import arrowIconLeft from '../assets/images/icon-arrow-left.svg';
 import arrowIconRight from '../assets/images/icon-arrow-right.svg';
@@ -162,6 +165,9 @@ function debounce() {
  * This parameter is a string value indicating the direction depending on what the user is using to move the slider. It could be button direction, keyboard arrow keys, mousedown/mouseup, and touch effect.
  */
 function updateSlide(direction) {
+  // Add the transition effect when the slide is updated
+  slider.classList.add('on-transition');
+
   if (direction == NEXT_ITEM) {
     if (counter >= firstCloneNodeIndex) {
       offsetSlider(secondNodeIndex);
@@ -204,10 +210,12 @@ function handleClick(btnTarget) {
 function trackDistances(distanceCovered, distanceTrigger) {
   if (distanceCovered > distanceTrigger) {
     // Previous Slide
-    updateSlide(NEXT_ITEM);
+    const direction = NEXT_ITEM;
+    updateSlide(direction);
   } else if (distanceCovered < -distanceTrigger) {
     // Next Slide
-    updateSlide(PREVIOUS_ITEM);
+    const direction = PREVIOUS_ITEM;
+    updateSlide(direction);
   }
 }
 
@@ -221,13 +229,11 @@ function startMouseTouchNav(evtObj) {
   if (!ispressed && evtObj instanceof MouseEvent) {
     ispressed = true;
     startMouseTouchX = evtObj.clientX;
-    console.log(startMouseTouchX);
   }
 
   if (!istouched && evtObj instanceof TouchEvent) {
     istouched = true;
     startMouseTouchX = evtObj.changedTouches[0].pageX;
-    console.log(startMouseTouchX);
   }
 
   slider.style.cursor = 'grabbing';
@@ -253,8 +259,6 @@ function endMouseTouchNav(evtObj) {
 
   // We monitor the distance covered by the touch pointer and track the direction by using a tracker to move to the next/prev slide.
   if (istouched && evtObj instanceof TouchEvent) {
-    //TODO We prevent the mouse from being sent. However, I noticed this does not work on chrome and it seems that the non-passive event listener has been place by the browser. I need to make the listener passive so that it prevents the listener from blocking the page rendering while the user is scrolling.
-    evtObj.preventDefault();
     const endMouseTouchX = evtObj.changedTouches[0].pageX;
     const distanceTouchX = endMouseTouchX - startMouseTouchX;
     istouched = false;
@@ -262,6 +266,23 @@ function endMouseTouchNav(evtObj) {
   }
 
   slider.style.cursor = 'grab';
+}
+
+/**
+ * This function handles the keyboard navigation
+ * @param {KeyboardEvent} evtObj
+ * The keyboard event object that described the user interaction with the keyboard.
+ */
+function handleKeyNav(evtObj) {
+  if (evtObj instanceof KeyboardEvent) {
+    if (evtObj.key === 'ArrowRight') {
+      const direction = NEXT_ITEM;
+      updateSlide(direction);
+    } else if (evtObj.key === 'ArrowLeft') {
+      const direction = PREVIOUS_ITEM;
+      updateSlide(direction);
+    }
+  }
 }
 
 // Handling the Button events
@@ -275,15 +296,30 @@ sliderButtons.forEach(function (sliderButton) {
 });
 
 // Navigation using mouse/track pads and fingers
-sliderWrapper.addEventListener('touchstart', startMouseTouchNav);
 sliderWrapper.addEventListener('mousedown', startMouseTouchNav);
 sliderWrapper.addEventListener('mouseup', endMouseTouchNav);
-sliderWrapper.addEventListener('touchend', endMouseTouchNav);
 
-// TODO Keyboard navigation
+// Older browser try to interpret object in the third argument as a try value in the capture argument. We need to use a feature detection when using this API prevent possible unforeseen results. The aim is to create a passive listener to prevent the preventDefault() from being called on the event making it to block scrolling.
+sliderWrapper.addEventListener(
+  'touchstart',
+  startMouseTouchNav,
+  supportsPassiveEvents ? { capture: false, passive: true } : false
+);
+sliderWrapper.addEventListener(
+  'touchend',
+  endMouseTouchNav,
+  supportsPassiveEvents ? { capture: false, passive: true } : false
+);
+
+// TODO Carry out animation of the different sections when they come into the view of the user on scroll. You can use the IntersectionObserver API to perform this task.
+
+// TODO Using JavaScript mark when the transition ends and then remove the transition, then update the live region.
 
 // When the page loads we want the fifth slide to always be at the center of the view.
 window.addEventListener('load', initialSlideIndex);
 
 // When the user resizes the window we want the any of the slide to always be at the center of the view.
 window.addEventListener('resize', debounce);
+
+// When the user keys down on the right and left arrow keys we want to navigate the slider as well making it accessible for keyboard users.
+window.addEventListener('keydown', handleKeyNav);
