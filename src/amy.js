@@ -11,8 +11,8 @@ const PREVIOUS_ITEM = 'Previous Item';
 const FIRST_NODE_INDEX = 0;
 const SECOND_NODE_INDEX = 1;
 const THIRD_NODE_INDEX = 2;
-const FIFTH_NODE_INDEX = 4;
-const SEVENTH_NODE_INDEX = 6;
+const FOURTH_NODE_INDEX = 3;
+const EIGHT_NODE_INDEX = 7;
 const NINTH_NODE_INDEX = 8;
 const myWork = /**@type {Element | null} */ (document.querySelector('.myWork'));
 const liveRegion = /**@type {HTMLParagraphElement} */ (
@@ -28,13 +28,16 @@ const sliderButtonsContainer = document.createElement('ul');
 let counter = 0;
 let delay = 300; // The delay after the event is 'complete' for the callback to run.
 let debouncetimeoutID = /** @type {number | boolean} */ (false); // This holds the timeout id.
-let secondNodeIndex = /** @type {number | null} */ (null);
-let fourthNodeIndex = /** @type {number | null} */ (null);
-let firstCloneNodeIndex = /** @type {number | null} */ (null);
-let fourthCloneNodeIndex = /** @type {number | null} */ (null);
+let firstNodeIndex = /** @type {number | null} */ (null);
+let lastNodeIndex = /** @type {number | null} */ (null);
+let firstClonedNodeIndex = /** @type {number | null} */ (null);
+let lastClonedNodeIndex = /** @type {number | null} */ (null);
 let ispressed = false;
 let istouched = false;
 let startMouseTouchX = /** @type {number | null} */ (null);
+
+
+let direction = /**@type {string | nill} */ (null);
 
 sliderButtonsContainer.className = 'myWork__BtnControls';
 sliderButtonsContainer.insertAdjacentHTML(
@@ -75,6 +78,7 @@ function createCloneSlides() {
   return cloneNodeSlides;
 }
 const clonedSlides = createCloneSlides();
+console.log(clonedSlides);
 
 /**
  * We create a function that will enable us know the width of the slider and one width of the slide.
@@ -109,16 +113,18 @@ function offsetSlider(slideIndex) {
  */
 function initialSlideIndex() {
   // The original index of the second slide that is not cloned in the cloned slides.
-  secondNodeIndex = clonedSlides.length - SEVENTH_NODE_INDEX;
-  // The original index of the fourth slide that is not cloned in the cloned slides.
-  fourthNodeIndex = clonedSlides.length - FIFTH_NODE_INDEX;
-  // The index of the first slide that is cloned in the cloned slides.
-  firstCloneNodeIndex = clonedSlides.length - THIRD_NODE_INDEX;
-  // The index of fourth slide that was cloned
-  fourthCloneNodeIndex = clonedSlides.length - NINTH_NODE_INDEX;
+  firstNodeIndex = clonedSlides.length - EIGHT_NODE_INDEX;
+  // The original index of the last slide that is not cloned in the cloned slides.
+  lastNodeIndex = clonedSlides.length - FOURTH_NODE_INDEX;
+  // The index of the first slide that is cloned in the cloned slides
+  firstClonedNodeIndex = clonedSlides.length - THIRD_NODE_INDEX;
+  // The index of last slide that is cloned in the cloned slides
+  lastClonedNodeIndex = clonedSlides.length - NINTH_NODE_INDEX;
   // Initialize the counter that we would use to track the movement of each slide.
   // The initial counter will ensure the fifth slide is always at the center.
   counter = Math.floor((clonedSlides.length - SECOND_NODE_INDEX) / DIVIDER);
+
+  console.log(lastClonedNodeIndex, lastNodeIndex);
 
   // Ensure that for every transition, the slide is at the center of the viewport.
   offsetSlider(counter);
@@ -161,31 +167,33 @@ function debounce() {
 
 /**
  * The function updates the slider.
- * @param {string} direction
+ * @param {boolean} checkClone
  * This parameter is a string value indicating the direction depending on what the user is using to move the slider. It could be button direction, keyboard arrow keys, mousedown/mouseup, and touch effect.
  */
-function updateSlide(direction) {
-  // Add the transition effect when the slide is updated
-  slider.classList.add('on-transition');
-
+function updateSlide(checkClone) {
   if (direction == NEXT_ITEM) {
-    if (counter >= firstCloneNodeIndex) {
-      offsetSlider(secondNodeIndex);
-    } else {
+    if (counter >= firstClonedNodeIndex && checkClone) {
+      slider.style.transition = 'none';
+      offsetSlider(firstNodeIndex);
+    } else if (!checkClone) {
+      slider.style.transition = 'transform 0.25s ease-in-out';
       counter++;
       offsetSlider(counter);
     }
   }
 
   if (direction == PREVIOUS_ITEM) {
-    if (counter <= fourthCloneNodeIndex) {
-      offsetSlider(fourthNodeIndex);
-    } else {
+    if (counter <= lastClonedNodeIndex && checkClone) {
+      slider.style.transition = 'none';
+      offsetSlider(lastNodeIndex);
+    } else if (!checkClone) {
+      slider.style.transition = 'transform 0.25s ease-in-out';
       counter--;
       offsetSlider(counter);
     }
   }
 
+  // slider.style.transition = 'transform 0.25s ease-in-out';
   showCurrentSlide();
 }
 
@@ -196,8 +204,8 @@ function updateSlide(direction) {
  */
 function handleClick(btnTarget) {
   // We need to know what has been clicked so we can know how to move and transition the slider.
-  const direction = btnTarget.getAttribute('aria-label');
-  updateSlide(direction);
+  direction = btnTarget.getAttribute('aria-label');
+  updateSlide();
 }
 
 /**
@@ -210,12 +218,12 @@ function handleClick(btnTarget) {
 function trackDistances(distanceCovered, distanceTrigger) {
   if (distanceCovered > distanceTrigger) {
     // Previous Slide
-    const direction = NEXT_ITEM;
-    updateSlide(direction);
+    direction = NEXT_ITEM;
+    updateSlide();
   } else if (distanceCovered < -distanceTrigger) {
     // Next Slide
-    const direction = PREVIOUS_ITEM;
-    updateSlide(direction);
+    direction = PREVIOUS_ITEM;
+    updateSlide();
   }
 }
 
@@ -276,11 +284,11 @@ function endMouseTouchNav(evtObj) {
 function handleKeyNav(evtObj) {
   if (evtObj instanceof KeyboardEvent) {
     if (evtObj.key === 'ArrowRight') {
-      const direction = NEXT_ITEM;
-      updateSlide(direction);
+      direction = NEXT_ITEM;
+      updateSlide();
     } else if (evtObj.key === 'ArrowLeft') {
-      const direction = PREVIOUS_ITEM;
-      updateSlide(direction);
+      direction = PREVIOUS_ITEM;
+      updateSlide();
     }
   }
 }
@@ -311,9 +319,12 @@ sliderWrapper.addEventListener(
   supportsPassiveEvents ? { capture: false, passive: true } : false
 );
 
-// TODO Carry out animation of the different sections when they come into the view of the user on scroll. You can use the IntersectionObserver API to perform this task.
+// So when the transition comes to an end we want to remove the transition property applied, update the slides, and then update the live region that would be announced to the user.
+slider.addEventListener('transitionend', function () {
+  updateSlide(true);
+});
 
-// TODO Using JavaScript mark when the transition ends and then remove the transition, then update the live region.
+// TODO Carry out animation of the different sections when they come into the view of the user on scroll. You can use the IntersectionObserver API to perform this task.
 
 // When the page loads we want the fifth slide to always be at the center of the view.
 window.addEventListener('load', initialSlideIndex);
