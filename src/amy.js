@@ -19,9 +19,11 @@ const liveRegion = /**@type {HTMLParagraphElement} */ (
   document.createElement('p')
 );
 const sliderWrapper = document.querySelector('[data-slider-wrapper]');
-console.log(sliderWrapper);
 const slider = /**@type {HTMLUListElement} */ (
   document.querySelector('[data-slider]')
+);
+const slides = /**@type {NodeList} */ (
+  document.querySelectorAll('[data-slide]')
 );
 const sliderButtonsContainer = document.createElement('ul');
 
@@ -59,9 +61,6 @@ myWork?.appendChild(sliderButtonsContainer);
  * This function create a cloned of the slides.
  */
 function createCloneSlides() {
-  const slides = /**@type {NodeList} */ (
-    document.querySelectorAll('[data-slide]')
-  );
   const firstCloneNode = slides[FIRST_NODE_INDEX].cloneNode(true);
   const secondCloneNode = slides[SECOND_NODE_INDEX].cloneNode(true);
   const fourthCloneNode =
@@ -188,7 +187,6 @@ function updateSlide(checkClone) {
     }
   }
 
-  // slider.style.transition = 'transform 0.25s ease-in-out';
   showCurrentSlide();
 }
 
@@ -288,6 +286,23 @@ function handleKeyNav(evtObj) {
   }
 }
 
+/**
+ * The function updates the live region that will announced to the user via a screen reader when the transition comes to an end.
+ * @returns {void}
+ */
+function updateLiveRegion() {
+  // The announce to the user should be only when it has actually updated and the no other interaction happens
+  liveRegion.setAttribute('aria-live', 'polite');
+  // I want the screen reader's to announce the live region's text in all of its entirety and not just what changed.
+  liveRegion.setAttribute('aria-atomic', 'true');
+  // Visually remove the element form the page.
+  liveRegion.setAttribute('class', 'sr-only');
+  // Update the text so the user knows how many slides they have gone through
+  liveRegion.textContent = `Item ${counter - 1} of ${slides.length}`;
+  // Append it to the work section in the Document Object Model
+  myWork?.appendChild(liveRegion);
+}
+
 // Handling the Button events
 const sliderButtons = document.querySelectorAll('.btn__slider');
 sliderButtons.forEach(function (sliderButton) {
@@ -317,6 +332,7 @@ sliderWrapper.addEventListener(
 // So when the transition comes to an end we want to remove the transition property applied, update the slides, and then update the live region that would be announced to the user.
 slider.addEventListener('transitionend', function () {
   updateSlide(true);
+  updateLiveRegion();
 });
 
 // TODO Carry out animation of the different sections when they come into the view of the user on scroll. You can use the IntersectionObserver API to perform this task.
