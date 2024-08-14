@@ -10,7 +10,6 @@
 </div>
 
 <br />
-```
 
 ![A desktop preview](./assets/images/Desktop.png)
 
