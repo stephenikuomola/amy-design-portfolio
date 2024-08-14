@@ -371,7 +371,7 @@ ul[class="expertise__list"] a:before {
   font-style: normal;
   line-height: var(--line-height-normal);
   text-decoration: none;
-  transition: transform .4s cubic-bezier(.19, 1, .22, 1);
+  transition: transform .25s cubic-bezier(.19, 1, .22, 1);
   position: relative;
 }
 
@@ -493,11 +493,11 @@ ul[class~="myWork__slides"] img {
   pointer-events: none;
 }
 
-.myWork__slides.on-transition {
-  transition: transform 6s cubic-bezier(.19, 1, .22, 1);
+ul[class~="myWork__slides"][class~="on-transition"] {
+  transition: transform .2s ease-in-out;
 }
 
-li[class="myWork__slide"] {
+li[class~="myWork__slide"] {
   border-radius: var(--radius-5);
   flex: 0 0 78.3%;
   max-width: 540px;
