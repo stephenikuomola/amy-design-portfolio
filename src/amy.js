@@ -196,7 +196,7 @@ function updateSlide(checkClone) {
  * The function accepts a button element
  */
 function handleClick(btnTarget) {
-  // We need to know what has been clicked so we can know how to move and transition the slider.
+  // We need to know what button has been clicked so we can know the direction to move and transition the slider.
   direction = btnTarget.getAttribute('aria-label');
   updateSlide();
 }
