@@ -32,12 +32,10 @@ let firstNodeIndex = /** @type {number | null} */ (null);
 let lastNodeIndex = /** @type {number | null} */ (null);
 let firstClonedNodeIndex = /** @type {number | null} */ (null);
 let lastClonedNodeIndex = /** @type {number | null} */ (null);
+let direction = /**@type {string | nill} */ (null);
 let ispressed = false;
 let istouched = false;
 let startMouseTouchX = /** @type {number | null} */ (null);
-
-
-let direction = /**@type {string | nill} */ (null);
 
 sliderButtonsContainer.className = 'myWork__BtnControls';
 sliderButtonsContainer.insertAdjacentHTML(
@@ -78,7 +76,6 @@ function createCloneSlides() {
   return cloneNodeSlides;
 }
 const clonedSlides = createCloneSlides();
-console.log(clonedSlides);
 
 /**
  * We create a function that will enable us know the width of the slider and one width of the slide.
@@ -111,7 +108,7 @@ function offsetSlider(slideIndex) {
  * This function initializes the slide index so that the it offsets to the middle of the slider.
  * @returns {void}
  */
-function initialSlideIndex() {
+function initializeSlideIndex() {
   // The original index of the second slide that is not cloned in the cloned slides.
   firstNodeIndex = clonedSlides.length - EIGHT_NODE_INDEX;
   // The original index of the last slide that is not cloned in the cloned slides.
@@ -123,8 +120,6 @@ function initialSlideIndex() {
   // Initialize the counter that we would use to track the movement of each slide.
   // The initial counter will ensure the fifth slide is always at the center.
   counter = Math.floor((clonedSlides.length - SECOND_NODE_INDEX) / DIVIDER);
-
-  console.log(lastClonedNodeIndex, lastNodeIndex);
 
   // Ensure that for every transition, the slide is at the center of the viewport.
   offsetSlider(counter);
@@ -327,7 +322,7 @@ slider.addEventListener('transitionend', function () {
 // TODO Carry out animation of the different sections when they come into the view of the user on scroll. You can use the IntersectionObserver API to perform this task.
 
 // When the page loads we want the fifth slide to always be at the center of the view.
-window.addEventListener('load', initialSlideIndex);
+window.addEventListener('load', initializeSlideIndex);
 
 // When the user resizes the window we want the any of the slide to always be at the center of the view.
 window.addEventListener('resize', debounce);
