@@ -29,7 +29,7 @@ To run this project locally, run this command on your git bash/terminal.
 **Linus and MacOs**
 
 ```bash
-sudo git clone https://github.com/stephenikuomola/amy-design-portfolio
+sudo git clone https://github.com/stephenikuomola/amy-design-portfolio.git
 npm install
 npm run start
 ```
@@ -37,7 +37,7 @@ npm run start
 **Windows**
 
 ```bash
-git clone https://github.com/stephenikuomola/amy-design-portfolio
+git clone https://github.com/stephenikuomola/amy-design-portfolio.git
 npm install
 npm run start
 ```
