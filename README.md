@@ -4,7 +4,7 @@
 	A fully responsive portfolio website for a client that specializes in Photography, Graphics, Motion, and UI/UX design <br />
   Responsive to all devices using HTML, CSS, and JavaScript.
   <br />
-  <a href="https://amy-the-designer.vercel.app/"
+  <a href="https://amy-the-designer.netlify.app/"
     ><strong>➥ Live Demo</strong></a
   >
 </div>
