@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./assets/favicon/apple-touch-icon.png" />
+  <img src="./assets/favicons/apple-touch-icon.png" />
   <h2 align="center">Amy | Design&Photography</h2>
 	A fully responsive portfolio website for a client that specializes in Photography, Graphics, Motion, and UI/UX design <br />
   Responsive to all devices using HTML, CSS, and JavaScript.
