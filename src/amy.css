@@ -546,10 +546,11 @@ ul[class~="myWork__slides"] {
   width: 100%;
 }
 
-ul[class~='myWork__slides'] img {pointer-events: none;}
+ul[class~="myWork__slides"] img {
+  pointer-events: none;
+}
 
-
-ul[class~='myWork__slides'][class~='on-transition'] {
+ul[class~="myWork__slides"][class~="on-transition"] {
   transition: transform 0.2s ease-in-out;
 }
 
