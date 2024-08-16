@@ -21,7 +21,7 @@
     "lint:prettier": "prettier --write .",
     "start": "parcel index.html"
   },
-  "browserslist": "> 0.5%, last 2 versions, not dead",
+  "browserslist": "> 0.3%, last 2 versions, Firefox ESR, not dead",
   "dependencies": {
     "detect-it": "^4.0.1",
     "eslint-plugin-jsdoc": "^48.7.0",
