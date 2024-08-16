@@ -607,6 +607,14 @@ const sliderWrapper = document.querySelector("[data-slider-wrapper]");
 const slider = /**@type {HTMLUListElement} */ document.querySelector("[data-slider]");
 const slides = /**@type {NodeList} */ document.querySelectorAll("[data-slide]");
 const sliderButtonsContainer = document.createElement("ul");
+// We want to define out target elements to be observed.
+const targetElements = /**@type {NodeList}*/ document.querySelectorAll("[data-section]");
+// IntersectionObserver options which lets us control the circumstance by which the observer is called.
+const options = {
+    root: null,
+    rootMargin: "0px 0px 60px 0px",
+    threshold: 0.2
+};
 let counter = 0;
 let delay = 300; // The delay after the event is 'complete' for the callback to run.
 let debouncetimeoutID = /** @type {number | boolean} */ false; // This holds the timeout id.
@@ -863,7 +871,28 @@ slider.addEventListener("transitionend", function() {
     updateSlide(true);
     updateLiveRegion();
 });
-// TODO Carry out animation of the different sections when they come into the view of the user on scroll. You can use the IntersectionObserver API to perform this task.
+// We create a callback function for our observer that will be executed when our circumstances of intersection are met via the options object.
+/**
+ * The intersection observer callback function that will reveal on scroll.
+ * @param {Array<IntersectionObserverEntry>} observerEntries
+ * An array of IntersectionObserver Entry for each of the target element the root intersection rectangle.
+ * @param {object} observer
+ * The observer object
+ */ function revealOnScroll(observerEntries, observer) {
+    observerEntries.forEach((observerEntry)=>{
+        if (observerEntry.isIntersecting) {
+            observerEntry.target.setAttribute("data-section-intersecting", "true");
+            observerEntry.target.removeAttribute("data-section");
+            observer.unobserve(observerEntry.target);
+        }
+    });
+}
+// Create the observer object that we will use to observe each individual section.
+const observer = new IntersectionObserver(revealOnScroll, options);
+// Loop over all the target elements and then observe each of the sections individually.
+targetElements.forEach(function(targetElement) {
+    if (targetElement instanceof HTMLElement) observer.observe(targetElement);
+});
 // When the page loads we want the fifth slide to always be at the center of the view.
 window.addEventListener("load", initializeSlideIndex);
 // When the user resizes the window we want the any of the slide to always be at the center of the view.

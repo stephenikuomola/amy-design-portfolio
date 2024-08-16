@@ -289,6 +289,17 @@ a[class="logo"]:focus-visible {
   }
 }
 
+section[data-section-intersecting] {
+  opacity: 1;
+  transition: opacity 2s ease-in, transform 3s ease-out;
+  transform: translateY(0);
+}
+
+section[data-section] {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
 .expertise__intro, .expertise__phrase {
   text-align: center;
   margin-inline: auto;
