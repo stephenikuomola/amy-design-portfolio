@@ -328,6 +328,18 @@ a[class="logo"]:focus-visible {
   }
 }
 
+
+/* On-Scroll Animation */
+section[data-section-intersecting] {
+  opacity: 1;
+  transform: translateY(0px);
+  transition: opacity 2s ease-in, transform 3s ease-out;
+}
+
+section[data-section] {
+  opacity: 0;
+  transform: translateY(30px);
+}
 /* MAIN STYLES */
 
 /* EXPERTISE */
